@@ -140,7 +140,7 @@ if(length(nt.aaV)==0){
 
 fp <- args[3]
 fn1<-paste(fp,'.stats',sep='')
-conservation.table<-cbind(AA_100C=nt.aa100C.p, Codon_100C=nt.nt100C.p, AA_V=nt.aaV.p)
+conservation.table<-cbind(AA_100C=nt.aa100C.p, Codon_100C=nt.nt100C.p, AA_V=nt.aaV.p, AA_Length=dim(nt.table)[2])
 write.table(conservation.table,fn1,  row.names = F, col.names = F, quote=F)
 
 
