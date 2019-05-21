@@ -2,7 +2,8 @@
 # run with Rscript --vanilla scriptName.R
 
 args = commandArgs(trailingOnly=TRUE)
-n<-as.numeric(args[5])-1
+args <- args[which(args!="")]
+n<-as.numeric(args[1])-1
 
 # test if there is at least one argument: if not, return an error
 if (length(args)==0) {
@@ -50,18 +51,10 @@ calculate_bootseqs <- function(fn){
 	#return(bootseq)
 }
 
-
-fn <- args[1]
-calculate_bootseqs(fn)
-fn <- args[2]
-calculate_bootseqs(fn)
-fn  <- args[3]
-calculate_bootseqs(fn)
-fn  <- args[4]
-calculate_bootseqs(fn)
-fn  <- args[6]
-calculate_bootseqs(fn)
-
+for (i in 2:length(args)){
+	fn <- args[i]
+	calculate_bootseqs(fn)
+}
 
 
 

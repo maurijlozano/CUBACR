@@ -4,21 +4,30 @@
 args = commandArgs(trailingOnly=TRUE)
 n<-as.numeric(args[1])
 nset<-as.numeric(args[2])
+HEP.exists <- as.numeric(args[3])
+LEP.exists <- as.numeric(args[4])
+PHE.exists <- as.numeric(args[5])
+
 distmat <- read.table("distances", header=FALSE, row.names=1 ,sep=" ", stringsAsFactors=FALSE, skip=1, colClasses = c("character"))
 distmat<-distmat[,-c(1,2,3,4)]
 
 #index begin with 0
+if( HEP.exists==1 & LEP.exists ==1 & PHE.exists ==1){
+	names <- c("HEP_CR","HEP_VR","LEP_CR","LEP_VR","PHE")
+} else if ( HEP.exists==1 & LEP.exists ==0 & PHE.exists ==1) {
+	names <- c("HEP_CR","HEP_VR","PHE")
+} else if (HEP.exists==0 & LEP.exists ==1 & PHE.exists ==1){
+	names <- c("LEP_CR","LEP_VR","PHE")
+} else if (HEP.exists==1 & LEP.exists ==1 & PHE.exists ==0){
+	names <- c("HEP_CR","HEP_VR","LEP_CR","LEP_VR")
+} else {
+	print("Only one set of data. Distances will not be analyzed.")
+	stop() 
+}
+
 distance_significance <- function(i,j){
-	if(i==0){N1<-"HEP_CR"}
-	if(i==1){N1<-"HEP_VR"}
-	if(i==2){N1<-"LEP_CR"}
-	if(i==3){N1<-"LEP_VR"}
-	if(i==4){N1<-"PHE"}
-	if(j==0){N2<-"HEP_CR"}
-	if(j==1){N2<-"HEP_VR"}
-	if(j==2){N2<-"LEP_CR"}
-	if(j==3){N2<-"LEP_VR"}
-	if(j==4){N2<-"PHE"}
+	N1<-names[(i+1)]
+	N2<-names[(j+1)]
 	submat <- distmat[((i*n)+1):((i+1)*n),((j*n)+1):((j+1)*n)]
 	real.dist <- as.numeric(submat[1,1])
 	submat <- as.numeric(submat[upper.tri(submat,diag = F)])

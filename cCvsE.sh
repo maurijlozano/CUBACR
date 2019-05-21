@@ -4,6 +4,7 @@ clear
 SKIP=0
 SKIPC=0
 Ite=50
+NDS=0
 show_help()
 {
 echo "
@@ -113,7 +114,7 @@ then
 			echo "${F} $(cat "${F}")" >> "${SN}_CE.table"
 		done
 		cd ..
-		Rscript --vanilla stats.plot.R "./${D}${SN}_CE.table"
+		Rscript --vanilla stats.plot.R "./${D}${SN}_CE.table" >/dev/null
 	done
 else
     	echo -e 'Skipping AA guided codon alingment.\n'
@@ -155,7 +156,9 @@ ls -d */ | while read D; do
 		compile_codon_counts  < "${SN}_${EFN}_VR.fas" | modal_usage_from_counts -a $(nproc) > "${SN}_${EFN}_VR.modal_freq"
 		cd ..
 		perl seq2AvgAA.pl "${D}${SN}_${EFN}_CR.fas"
+		echo -e "\n"
 		perl seq2AvgAA.pl "${D}${SN}_${EFN}_VR.fas"
+		echo -e "\n"
 		perl modal2seq2.pl "${D}${SN}_${EFN}_CR.modal_freq" "${D}${SN}_${EFN}_CR.aaav"
 		perl modal2seq2.pl "${D}${SN}_${EFN}_VR.modal_freq" "${D}${SN}_${EFN}_VR.aaav"
 		sed 's/>.*/>'${EFN}'_CR/' "${D}${SN}_${EFN}_CR.modal_freq.fas" > "${D}${SN}_${EFN}_CR.modal_freq.fased"
@@ -186,7 +189,10 @@ ls -d */ | while read D; do
  	#2.1. calcualte PHE concat.
  	
  	#tests if PHE file is present
- 	NDS=2
+ 	NDS=0
+	HEP=0
+	LEP=0
+		
 	if ! ls PHE/*.fa*
 	then 
 		echo -e "A PHE file located on SN/PHE folder is required for PHE distances calculations.\n"
@@ -194,36 +200,34 @@ ls -d */ | while read D; do
 	else	
 		#PHE concat
 		PHEEXIST=1
-		NDS=3
 		PHE=($(echo $(ls PHE/*.fa* | grep '.modal_freq.fas' -v))) 
 		PHEN=$(echo "${PHE}" | sed 's/^PHE\///' | sed 's/.fa.\?$//')
 	 	echo ">PHE_concat" > "${PHEN}_concat.fas" 
 		grep '>' -v "${PHE}" | sed -e 's/^ATG//' | sed -e 's/[T][AG][AG]$//'| tr -d "\n" > seq.tmp
 		echo "ATG"$(cat seq.tmp)"TAA"  >> "${PHEN}_concat.fas"
 		rm seq.tmp
-	fi 2>/dev/null
+	fi &>/dev/null
  	
  	declare -a FILESC
  	FILESC=($(echo $(ls *concat.fas | grep 'HEP')  $(ls *concat.fas | grep 'LEP')  $(ls *concat.fas | grep 'PHE')))
  	
- 	if [ ${PHEEXIST} == 1 ]
- 	then 
-	 	#2.2. PHE exists
-	 	Rscript --vanilla ../codonboots.R "${FILESC[0]}" "${FILESC[1]}" "${FILESC[2]}" "${FILESC[3]}" "${Ite}" "${FILESC[4]}"
-	else
-		#2.3. PHE does not exists
-	 	Rscript --vanilla ../codonboots.R "${FILESC[0]}" "${FILESC[1]}" "${FILESC[2]}" "${FILESC[3]}" "${Ite}"
-	fi
-	
+ 	#counting conditions!!
+ 	if ls HEP/*.fa*; then NDS=$(($NDS + 2)); HEP=1 ; echo -e " HEP proteins present.";fi &>/dev/null	
+ 	if ls LEP/*.fa*; then NDS=$(($NDS + 2)); LEP=1 ; echo -e " LEP proteins present.";fi &>/dev/null
+ 	if ls PHE/*.fa*; then NDS=$(($NDS + 1)); echo -e " PHE proteins present.";fi &>/dev/null	
+ 	echo -e "\n"
+ 	
+ 	#2.2. PHE exists
+	 Rscript --vanilla ../codonboots.R "${Ite}" "${FILESC[0]}" "${FILESC[1]}" "${FILESC[2]}" "${FILESC[3]}" "${FILESC[4]}" > /dev/null
+	 	
 	ls *.boot.fas | while read BOOT; do
 		BN=$(echo "${BOOT}" | sed 's/.fas$//')
 		compile_codon_freqs  < "${BOOT}" > "${BN}.freqs"
 	done
 
-	#aca la idea es mandar al distproc.r un argumento de si van distancias entre 2 o 4 datasets
+	#NDS depends on weather HEP CR/VR, LEP CR/V or PHE exist. 
 	freqs_2_dists $(echo $(ls *.boot.freqs | grep -v '^PHE') $(ls *.boot.freqs | grep '^PHE'))  > distances  #esto calcula la distancia tipo2 para todos contra todos-> como está puesto nos interesan los elementos i de 1:n y j de i+n a 2n. Esas serian todas las combinaciones de distancias entre 1i y 2i (11-21; 11-22; ....;12-21;...))
-	Rscript --vanilla ../distproc.R "${Ite}" "${NDS}"
-
+	Rscript --vanilla ../distproc.R "${Ite}" "${NDS}" "${HEP}" "${LEP}" "${PHEEXIST}" &>/dev/null
 
  	cd ..
 done
@@ -281,8 +285,8 @@ ls -d */ | while read D; do
 	sed -e 's/\+//g' coa_var_axis1_2.txt > coa_var_axis1_2.txted
 	mv coa_var_axis1_2.txted coa_var_axis1_2.txt
 	cd ..
-    Rscript --vanilla graph_coa.R "./${D}" genes.coa
-    Rscript --vanilla graph_codons.R "./${D}" codon.coa
+    Rscript --vanilla graph_coa.R "./${D}" genes.coa &>/dev/null
+    Rscript --vanilla graph_codons.R "./${D}" codon.coa &>/dev/null
     echo -e "\n"
 done
  	
