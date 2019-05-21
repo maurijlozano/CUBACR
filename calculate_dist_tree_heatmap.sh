@@ -46,9 +46,6 @@ ls -d */ | while read D; do
 
 	cd ..
 	Rscript --vanilla tree_heatmap.r "./${D}"
-	cd "$D"
-	figtree -graphic SVG renamed.tree "${TN}.svg" &> /dev/null
-	cd ..
 done
 
 

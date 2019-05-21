@@ -56,4 +56,10 @@ svg(fn,width=14,height=10)
 	phylo.heatmap(tree,data[,-c(60,61)],colors=colors,fsize=c(1,0.7,1),standardize=T)
 dev.off()
 
+fn<-paste(args[1],"tree.svg",sep='')
+
+svg(fn,width=10,height=10)
+	plot(tree,type="unrooted",no.margin=TRUE,lab4ut="axial", edge.width=2,cex=0.8,label.offset=0.02)
+dev.off()
+
 
