@@ -45,6 +45,6 @@ ls -d */ | while read F; do
 
     svg_stack.py --direction=h --margin=0 fig4.svg "./${F}"delta-heatmap.svg > fig4a.svg
 	rm fig4.svg
-    mv fig4a.svg Heatmap.svg
+    mv fig4a.svg fig4.svg
 done
-
+mv fig4.svg Heatmap.svg
