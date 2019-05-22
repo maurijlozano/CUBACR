@@ -138,7 +138,7 @@ ls -d */ | while read D; do
 		EFN=$(echo "${ED}" | sed 's/\/$//')
 		echo -e "\nProcessing ${EFN}.\n"
 		#CR
-		cat $(ls ${ED}*/* | grep 'nt100C.fas$') > "${SN}_${EFN}_CR.fas"
+		cat $(ls ${ED}*/* | grep 'aa100C.fas$') > "${SN}_${EFN}_CR.fas"
 		#make concatenated sequence..
 		echo ">${EFN}_CR_concat" > "${SN}_${EFN}_CR_concat.fas" 
 		grep '>' -v "${SN}_${EFN}_CR.fas" | sed -e 's/^ATG//' | sed -e 's/[T][AG][A]$//'| tr -d "\n" > seq.tmp
