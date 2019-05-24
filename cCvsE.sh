@@ -10,10 +10,11 @@ SKIPCOA=0
 SKIPT=0
 Ite=50
 NDS=0
+VI=0.2
 show_help()
 {
 echo "
-        Usage: cCvsE.sh [-o] [-c] [-h] [-i] [-b] [-m] [-n] [-a] [-t]
+        Usage: cCvsE.sh [-o] [-c] [-h] [-i] [-b] [-m] [-n] [-a] [-t] [-v]
 
         -o Skips G.Olsen Bootstrapped distances calculation
         -c Skips AA guided codon alingment calculation
@@ -24,6 +25,7 @@ echo "
         -n Skips CR and VR modal sequences calculations
         -a Skips CA analysis
         -t Skips Conservation table generation
+        -v Defines variability cutoff, must be 0<v<1
 "
 
 echo -e '\nGenerates an amino acid guided codon alignment and calcualtes codon usage for conserved protein sequences, both on higly and lowly expressed proteins.\n
@@ -32,7 +34,7 @@ Then calculates the distance between modal and bootstraped sequences.\n\n'
 exit 1
 }
 
-while getopts ":ochbmnati:" option; do
+while getopts ":ochbmnatv:i:" option; do
     case "${option}" in
         o) SKIP=1;;
         c) SKIPC=1;;
@@ -40,6 +42,7 @@ while getopts ":ochbmnati:" option; do
             exit 1
             ;;
         i) Ite=$OPTARG;;
+        v) VI=$OPTARG;;
         b) SKIPB=1;;
         m) SKIPM=1;;
         n) SKIPCRVR=1;; 
@@ -108,8 +111,14 @@ then
 			if [ ! -d "${D}${FN}" ]; then mkdir "${D}${FN}"; fi
 			./translatorx_vLocal.pl -i "./${FP}" -o "./${FOP}" &> /dev/null
 			echo -e "Calculating ${FN} conserved codon fasta file. \n"
+			#removing enters from alignments
+			cat "./${FOP}.nt_ali.fasta" | perl -pe 'unless(/^>/){s/\n//g};s/>/\n>/' | sed '/^$/d' > "./${FOP}.nt_ali.fastaed"
+			cat "./${FOP}.aa_ali.fasta" | perl -pe 'unless(/^>/){s/\n//g};s/>/\n>/' | sed '/^$/d' > "./${FOP}.aa_ali.fastaed" 
+			mv "./${FOP}.nt_ali.fastaed" "./${FOP}.nt_ali.fasta"
+			mv "./${FOP}.aa_ali.fastaed" "./${FOP}.aa_ali.fasta"
+						
 			./codonAlnStats.pl -i "./${FOP}.nt_ali.fasta" -a "./${FOP}.aa_ali.fasta" -o "./${FOP}" > /dev/null
-			Rscript --vanilla stats.R "./${FOP}.aa.table" "./${FOP}.nt.table" "./${FOP}" > /dev/null
+			Rscript --vanilla stats.R "./${FOP}.aa.table" "./${FOP}.nt.table" "./${FOP}" "${VI}" "${FN}" > /dev/null
 		done
 	done 
 	

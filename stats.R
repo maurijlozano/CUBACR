@@ -10,6 +10,8 @@ if (length(args)==0) {
 
 aa.ali <- args[1]
 nt.ali <- args[2]
+vi<-as.numeric(args[4])
+
 
 #load data files
 
@@ -45,7 +47,7 @@ for (j in 2:dim(aa.freqs.pos)[2]){
 	}
 }
 
-nt.aa100C <- nt.table[1,idx]
+nt.aa100C <- nt.table[grep(args[5],nt.table[,1]),idx]
 nt.aa100C <- nt.aa100C[which(nt.aa100C != "---")]
 nt.aa100C.p <- length(idx)/dim(nt.table)[2]*100
 
@@ -71,7 +73,7 @@ for (j in 2:dim(nt.freqs.pos)[2]){
 	}
 }
 
-nt.nt100C <- nt.table[1,idx]
+nt.nt100C <- nt.table[grep(args[5],nt.table[,1]),idx]
 nt.nt100C <- nt.nt100C[which(nt.nt100C != "---")]
 nt.nt100C.p <- length(idx)/dim(nt.table)[2]*100
 
@@ -79,9 +81,9 @@ nt.nt100C.p <- length(idx)/dim(nt.table)[2]*100
 #Codon Variable
 idx<-NULL
 for (j in 2:dim(aa.freqs.pos)[2]){
-	if(mean(as.numeric(as.character(aa.freqs.pos[which(aa.freqs.pos[,j]!=0),j])))<0.2){idx<-c(idx, j)}
+	if(mean(as.numeric(as.character(aa.freqs.pos[which(aa.freqs.pos[,j]!=0),j])))<vi){idx<-c(idx, j)}
 }
-nt.aaV <- nt.table[1,idx]
+nt.aaV <- nt.table[grep(args[5],nt.table[,1]),idx]
 nt.aaV <- nt.aaV[which(nt.aaV != "---")]
 nt.aaV.p <- length(idx)/dim(nt.table)[2]*100
 
@@ -93,14 +95,14 @@ fn1<-paste(fn,'.aa100C.fas',sep='')
 
 file.create(fn1)
 if(length(nt.aa100C)==0){
-	write.table(paste('>',nt.table[1,1],sep=''), fn1, , row.names = F, col.names = F,append=T,quote=F)
+	write.table(paste('>',nt.table[grep(args[5],nt.table[,1]),1],sep=''), fn1, , row.names = F, col.names = F,append=T,quote=F)
 	write.table(paste('ATG','TAA',sep=''), fn1, , row.names = F, sep='', col.names = F,append=T,quote=F)
 } else {
 	if(nt.aa100C[1]=="ATG"){nt.aa100C<-nt.aa100C[-1]}
 	if(length(nt.aa100C)!=0){
 		if(nt.aa100C[length(nt.aa100C)]=="TAA" || nt.aa100C[length(nt.aa100C)]=="TGA" || nt.aa100C[length(nt.aa100C)]=="TGA"){nt.aa100C <- nt.aa100C[-length(nt.aa100C)]}
 	}
-	write.table(paste('>',nt.table[1,1],sep=''), fn1, , row.names = F, col.names = F,append=T,quote=F)
+	write.table(paste('>',nt.table[grep(args[5],nt.table[,1]),1],sep=''), fn1, , row.names = F, col.names = F,append=T,quote=F)
 	write.table(cbind("ATG",nt.aa100C,"TAA"), fn1, , row.names = F, sep='', col.names = F,append=T,quote=F)
 }
 
@@ -110,14 +112,14 @@ fn1<-paste(fn,'.nt100C.fas',sep='')
 
 file.create(fn1)
 if(length(nt.nt100C)==0){
-	write.table(paste('>',nt.table[1,1],sep=''), fn1, row.names = F, col.names = F,append=T,quote=F)
+	write.table(paste('>',nt.table[grep(args[5],nt.table[,1]),1],sep=''), fn1, row.names = F, col.names = F,append=T,quote=F)
 	write.table(paste('ATG','TAA',sep=''), fn1, row.names = F, sep='', col.names = F,append=T,quote=F)
 } else {
 	if(nt.nt100C[1]=="ATG"){nt.nt100C<-nt.nt100C[-1]}
 	if(length(nt.nt100C)!=0){
 		if(nt.nt100C[length(nt.nt100C)]=="TAA" || nt.nt100C[length(nt.nt100C)]=="TGA" || nt.nt100C[length(nt.nt100C)]=="TGA"){nt.nt100C <- nt.nt100C[-length(nt.nt100C)]}
 	}
-	write.table(paste('>',nt.table[1,1],sep=''), fn1, row.names = F, col.names = F,append=T,quote=F)
+	write.table(paste('>',nt.table[grep(args[5],nt.table[,1]),1],sep=''), fn1, row.names = F, col.names = F,append=T,quote=F)
 	write.table(cbind("ATG",nt.nt100C,"TAA"), fn1, row.names = F, sep='', col.names = F,append=T,quote=F)
 }
 
@@ -127,14 +129,14 @@ fn1<-paste(fn,'.aaV.fas',sep='')
 
 file.create(fn1)
 if(length(nt.aaV)==0){
-	write.table(paste('>',nt.table[1,1],sep=''), fn1, row.names = F, col.names = F,append=T,quote=F)
+	write.table(paste('>',nt.table[grep(args[5],nt.table[,1]),1],sep=''), fn1, row.names = F, col.names = F,append=T,quote=F)
 	write.table(paste('ATG','TAA',sep=''), fn1, row.names = F, sep='', col.names = F,append=T,quote=F)
 } else {
 	if(nt.aaV[1]=="ATG"){nt.aaV<-nt.aaV[-1]}
 	if(length(nt.aaV)!=0){
 		if(nt.aaV[length(nt.aaV)]=="TAA" || nt.aaV[length(nt.aaV)]=="TGA" || nt.aaV[length(nt.aaV)]=="TGA"){nt.aaV <- nt.aaV[-length(nt.aaV)]}
 	}
-	write.table(paste('>',nt.table[1,1],sep=''), fn1, row.names = F, col.names = F,append=T,quote=F)
+	write.table(paste('>',nt.table[grep(args[5],nt.table[,1]),1],sep=''), fn1, row.names = F, col.names = F,append=T,quote=F)
 	write.table(cbind("ATG",nt.aaV,"TAA"), fn1, row.names = F, sep='', col.names = F,append=T,quote=F)
 }
 
