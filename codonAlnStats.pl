@@ -50,9 +50,11 @@ else{	$out_file = "ali2table";		}
 
 
 # Variables.
-my %nt_Seq_entry;
+my @nt_Seq_id;
+my @nt_Seq_entry;
 my @nt_seq;
-my %aa_Seq_entry;
+my @aa_Seq_id;
+my @aa_Seq_entry;
 my @aa_seq;
 my $aa_out_file;
 my $nt_out_file;
@@ -73,10 +75,10 @@ while (<FILE1>) {
 	if ($_ =~ /^>/){
 		$id = $_;
 		$id =~ s/^>//;
-		$nt_Seq_entry{$id}="";
+		push @nt_Seq_id, $id;
 	}
 	else{
-		$nt_Seq_entry{$id} = $nt_Seq_entry{$id}.$_;
+		push @nt_Seq_entry, $_;
 	}
 }	
 close FILE1;	
@@ -87,32 +89,32 @@ while (<FILE2>) {
 	if ($_ =~ /^>/){
 		$id = $_;
 		$id =~ s/^>//;
-		$aa_Seq_entry{$id}="";
+		push @aa_Seq_id, $id;
 	}
 	else{
-		$aa_Seq_entry{$id} = $aa_Seq_entry{$id}.$_;
+		push @aa_Seq_entry, $_;
 	}
 }	
 
 close FILE2;	
 
-
+my $len   = @nt_Seq_entry;
 # Split aa or codons and save table
 $nt_out_file = $out_file.".nt.table";
 open (FILE3, ">$nt_out_file");
-foreach my $key (keys %nt_Seq_entry){
-	@nt_seq = $nt_Seq_entry{$key} =~ /(...)/g;
-	print FILE3 $key." ".join(" ", @nt_seq)."\n";
+for (my $i=0; $i < $len; $i++){
+	@nt_seq = $nt_Seq_entry[$i] =~ /(...)/g;
+	print FILE3 $nt_Seq_id[$i]." ".join(" ", @nt_seq)."\n";
 }
 close FILE3;
 
 
-
+$len = @aa_Seq_entry;
 $nt_out_file = $out_file.".aa.table";
 open (FILE4, ">$nt_out_file");
-foreach my $key (keys %aa_Seq_entry){
-	@aa_seq = $aa_Seq_entry{$key} =~ /(.)/g;
-	print FILE4 $key." ".join(" ", @aa_seq)."\n";
+for (my $i=0; $i < $len; $i++){
+	@aa_seq = $aa_Seq_entry[$i] =~ /(.)/g;
+	print FILE4 $aa_Seq_id[$i]." ".join(" ", @aa_seq)."\n";
 }
 close FILE4;
 
