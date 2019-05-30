@@ -105,7 +105,7 @@ then
 			FN=$(echo "${F}" | sed 's/.fa.\?$//')
 			FP="${D}${F}"
 			#remove enters from seqs
-			cat "${FP}" | perl -pe 'unless(/^>/){s/\n//g};s/>/\n>/' | sed '/^$/d' > "${FP}ed"
+			cat "${FP}" | perl -pe 'unless(/^>/){s/\n//g};s/>/\n>/' | sed -e 's/-//g' -e '/^$/d' > "${FP}ed"
 			mv "${FP}ed" "${FP}"
 			FOP="${D}${FN}/${FN}"
 			if [ ! -d "${D}${FN}" ]; then mkdir "${D}${FN}"; fi
