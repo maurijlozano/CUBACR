@@ -33,10 +33,15 @@ ls -d */ | while read F; do
     cd "./${F}/"
     
     if [[ ! -f fmdata.txt ]] ; then
-		echo 'Please run cCvsE.sh first.'
+		echo 'Please run calculate_dist_tree_heatmap.sh first.'
     fi
   
     cd ..
     Rscript --vanilla heatmap.r "./${F}" "${FN}"
-
+    cd "./${F}/"
+    if [[ -d LEP ]] ; then
+    	cd ..
+    	Rscript --vanilla heatmap2.r "./${F}" "${FN}"
+    	
+	fi
 done
