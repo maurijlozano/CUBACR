@@ -25,7 +25,7 @@ library('ggthemes')
 
 #gsub(pattern, replacement, x, ignore.case = FALSE, perl = FALSE, fixed = FALSE, useBytes = FALSE)
 
-# "Expression.Protein.file" "AA.ID" "CODON.ID" "At.leats.5.AA" "AA.Length"      
+# "Expression.Protein.file" "AA.ID" "CODON.ID" "AA.VAR" "AA.Length"      
 new.col<-dim(table)[2]+1
 for (i in 1:dim(table)[1]){
 	table[i,(new.col)] <- gsub('(^[^/]*).*','\\1',table[i,1])
@@ -66,7 +66,7 @@ long_table <- gather(table, SEQ.ID, ID_Length, c(2,3,4,5,7,8,9))
 attach(long_table)
 
 
-long_table$SEQ.ID = factor(long_table$SEQ.ID, c("AA.ID","CODON.ID", "At.leats.5.AA", "AA.Length", "Length.AA.100", "Length.NT.100","Length.AA.Var"))
+long_table$SEQ.ID = factor(long_table$SEQ.ID, c("AA.ID","CODON.ID", "AA.VAR", "AA.Length", "Length.AA.100", "Length.NT.100","Length.AA.Var"))
 
 mu <- ddply(long_table, SET ~ SEQ.ID, summarise, grp.mean=mean(ID_Length))
   

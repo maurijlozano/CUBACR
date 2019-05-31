@@ -137,7 +137,7 @@ then
 	ls -d */ | while read D; do
 		cd ${D}
 		SN=$(echo "${D}" | sed 's/\/$//')
-		echo "Expression/Protein/file AA.ID CODON.ID At.leats.5.AA AA.Length" > "${SN}_CE.table"
+		echo "Expression/Protein/file AA.ID CODON.ID AA.VAR AA.Length" > "${SN}_CE.table"
 		ls */*/*.stats | while read F; do
 			echo "${F} $(cat "${F}")" >> "${SN}_CE.table"
 		done
