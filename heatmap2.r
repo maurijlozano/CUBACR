@@ -88,16 +88,20 @@ for (i in aminoacids){
 	}
 }
 rownames(mydata)=NULL
-
+i1 <- sum(abs (deltaHCR_HVR - deltaHEP_LEP))
+i2 <- sum(abs (deltaHCR_LCR - deltaHEP_LEP))
+i3 <- sum(abs (deltaHVR_LVR - deltaHEP_LEP))
+i4 <- sum(abs (deltaLCR_LVR - deltaHEP_LEP))
+indices <- cbind(i1,i2,i3,i4)
 
 heatmap.table <- mydata[,c(8,1,2,3,4,5,6)]
 rownames(heatmap.table)=paste(heatmap.table[,1],"|",heatmap.table[,2], sep="")
 colnames(heatmap.table)[1]<-"AA"
 colnames(heatmap.table)[2]<-"Codon"
-colnames(heatmap.table)[3]<-"HCR-HVR"
-colnames(heatmap.table)[4]<-"HCR-LCR"
-colnames(heatmap.table)[5]<-"HVR-LVR"
-colnames(heatmap.table)[6]<-"LCR-LVR"
+colnames(heatmap.table)[3]<-paste("HCR-HVR [",round(i1,1),"]",sep='')
+colnames(heatmap.table)[4]<-paste("HCR-LCR [",round(i2,1),"]",sep='')
+colnames(heatmap.table)[5]<-paste("HVR-LVR [",round(i3,1),"]",sep='')
+colnames(heatmap.table)[6]<-paste("LCR-LVR [",round(i4,1),"]",sep='')
 colnames(heatmap.table)[7]<-"HEP-LEP"
 heatmap.tablebk <- heatmap.table
 
@@ -115,10 +119,11 @@ myBreaks <- c(seq(-1, -0.7, length.out=2), seq(-0.65, -0.4, length.out=2), seq(-
 #rownames(annotation) <- colnames(heatmap.table)
 
 svg(filename="delta-heatmap2.svg", width=0.5, height=10, pointsize=10)
-p<-pheatmap(heatmap.table, cellwidth = 5, cellheight = 10, cluster_cols = FALSE,cluster_rows = FALSE, border_color=NA,legend = F,color=myColor, breaks=myBreaks,fontsize = 6, fontsize_col = 6, gaps_row =c(2,4,6,8,10,12,14,16,18,21,25,29,33,37,41,47,53), show_rownames=F,main=name)
+p<-pheatmap(heatmap.table, cellwidth = 7, cellheight = 10, cluster_cols = FALSE,cluster_rows = FALSE, border_color=NA,legend = F,color=myColor, breaks=myBreaks,fontsize = 6, fontsize_col = 6, gaps_row =c(2,4,6,8,10,12,14,16,18,21,25,29,33,37,41,47,53), show_rownames=F,main=name)
 print(p)
 dev.off()
 # annotation_names_col = F, annotation_legend = F, annotation_col=annotation, 
+
 
 
 
