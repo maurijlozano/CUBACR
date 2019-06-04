@@ -88,10 +88,10 @@ geom_bar(stat="identity", show.legend=F)+
 scale_fill_manual(values=c('aquamarine3','dodgerblue3','dodgerblue1','dodgerblue2','gold3','firebrick1','firebrick3','firebrick2'))+
 coord_cartesian(ylim = c(yminimo,ymaximo)) + #ylim(yminimo, ymaximo) hace desaparecer las barras
 ylab("m-tAI") + 
-theme_calc() +
+theme_classic() +
 theme(axis.text.x = element_text(size=14),
 	  axis.text.y = element_text(size=14),
-	  axis.title.x = element_text(size=18, face="bold"),
+	  axis.title.x = element_blank(),
 	  axis.title.y = element_text(size=18, face="bold")
 ) 
 
