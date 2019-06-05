@@ -356,7 +356,9 @@ then
 		cd ..
 		Rscript --vanilla graph_coa.R "./${D}" genes.coa &>/dev/null
 		Rscript --vanilla graph_codons.R "./${D}" codon.coa &>/dev/null
+		cd ${D}
 		rm coa_var_axis1_2.txt
+		cd ..
 		echo -e "\n"
 	done
 else
