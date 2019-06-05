@@ -47,7 +47,10 @@ ls -d */ | while read F; do
 	rm fig4.svg
     mv fig4a.svg fig4.svg
 done
-mv fig4.svg Heatmap.svg
+
+svg_stack.py --direction=h --margin=0 fig4.svg f4s.svg  > Heatmap.svg
+
+rm fig4.svg 
 
 
 cp f4b.svg fig4.svg
@@ -66,4 +69,5 @@ ls -d */ | while read F; do
     mv fig4a.svg fig4.svg
     fi
 done
-mv fig4.svg Heatmap2.svg
+svg_stack.py --direction=h --margin=0 fig4.svg f4s.svg  > Heatmap2.svg
+rm fig4.svg 
