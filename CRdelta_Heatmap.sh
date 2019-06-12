@@ -42,6 +42,7 @@ ls -d */ | while read F; do
     if [[ -d LEP ]] ; then
     	cd ..
     	Rscript --vanilla heatmap2.r "./${F}" "${FN}"
-    	
+    else
+    	cd ..	
 	fi
 done
