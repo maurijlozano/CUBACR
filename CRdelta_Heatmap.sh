@@ -34,6 +34,7 @@ ls -d */ | while read F; do
     
     if [[ ! -f fmdata.txt ]] ; then
 		echo 'Please run calculate_dist_tree_heatmap.sh first.'
+		exit
     fi
   
     cd ..
