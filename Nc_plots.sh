@@ -36,11 +36,12 @@ ls -d */ | while read D; do
  	sed -E 's/ //g' modal_seqs_NC_GC3s.tab > modal_seqs_NC_GC3s.tab2
  	mv modal_seqs_NC_GC3s.tab2 modal_seqs_NC_GC3s.tab
  	
- 	ls CC/*.fa* PHE/PHE*.fa* HEP/HEP.fa* LEP/LEP.fa* *.fa* | grep -v 'modal_freq' | grep -v 'concat' | while read F; do 
+ 	ls CC/*.fa* PHE/PHE*.fa* HEP/HEP.fa* LEP/LEP.fa* *.fa* | grep -v 'modal_freq' | grep -v 'concat' | while read F; do
+ 		sed -E 's/ //g' "${F}" | sed -E 's/\t/_/g' > seq.tmp
 		FN=$(echo "${F}" | sed -E 's/[^\/]*\///' | sed -E 's/[^_]*_([^_]*)_([^_]*).fas?$/\1-\2/' | sed -E 's/([^_]*).*/\1/' | sed -E 's/.fas?$//')
-		codonw "${F}" "${FN}.tab" "${FN}.blk" -enc -gc3s -nomenu -silent -nowarn &> /dev/null
+		codonw seq.tmp "${FN}.tab" "${FN}.blk" -enc -gc3s -nomenu -silent -nowarn &> /dev/null
 		sed -E 's/([^\t]*)/'"${FN}"'/'  "${FN}.tab" | tail -n +2 | grep '*' -v >> NC_GC3s.tmp
-		rm "${FN}.blk" "${FN}.tab"
+		rm "${FN}.blk" "${FN}.tab" seq.tmp
  	done
  	mv NC_GC3s.tmp NC_GC3s.tab
     
