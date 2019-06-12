@@ -71,7 +71,7 @@ geom_bar(stat="identity", show.legend=F) +
 scale_fill_manual(values = c("dodgerblue4",rep("dodgerblue3",LC),'firebrick4','firebrick3','firebrick2', 'maroon4','maroon3','maroon2','gold3','aquamarine3')) +
 #coord_cartesian(ylim = c(yminimo,ymaximo)) + #ylim(yminimo, ymaximo) hace desaparecer las barras
 ylab("Nc") + 
-xlab("Set") +
+xlab("Gene Set") +
 theme_classic() +
 theme(axis.text.x = element_text(size=14),
 	  axis.text.y = element_text(size=14),
@@ -160,7 +160,7 @@ scale_fill_manual(values = c("dodgerblue4",rep("dodgerblue3",LC),'firebrick4','f
 #stat_compare_means(comparisons = my_comparisons, label = "p.signif")+ # Add significance levels for ggpubr
 geom_text(data=Nc.sum ,aes(x=Nc.sum$title,y=(Nc.sum$Nc+(Nc.sum$Nc*.03)),label=ncgroups$groups),vjust=0)+
 ylab("Nc") + 
-xlab("Set") +
+xlab("Gene Set") +
 theme_classic() +
 theme(axis.text.x = element_text(size=14),
 	  axis.text.y = element_text(size=14),
