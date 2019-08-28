@@ -9,7 +9,7 @@ This CR (conserved) and VR (variable) sequences can then be used for:
 3. Correspondence analysis of RSCU for genes and modal frequencies.
 4. Calculate bootstrapped sequences using G. Olsen software.
 4. Generate bootstrapped sequences for concatenated CR and VR, and calculate G. Olsen distance (all vs. all)
-5. Calculate a neighbor joining tree based using G. Olsen `freqs_2_nj_tree_linux` script, and uses the tree to order the rows of a heatmap of modal codon usage frequences.
+5. Calculate a neighbor joining tree using G. Olsen `freqs_2_nj_tree_linux` script, and uses the tree to order the rows of a heatmap of modal codon usage frequences.
 6. Heatmaps of the difference of modal codon usage between Highly/lowly expressed and Conserved/Variable sequences.
 7. Calculate GC3, s-tAI, and Nc plots for all the genes and modal sequences.
 
@@ -81,15 +81,15 @@ From the root, which has all the scripts
   ¦
 ```
 
-`trna.txt` -> relative frequence of tRNA gene copies, as used in CUBES.
+`trna.txt` -> relative frequence of tRNA gene copies, as described in CUBES readme.md.  
 `s_opts_DCBS_GNM.txt` -> Sij obtained with CUBES using all the genome.
 
 Content of the folders:
 
 * HEP and LEP folders:
-  `locus_tagi.fa`: these files are multifasta files which will be used by TranslatorX for the amino acid based codon alignment. The first ortholog sequence in the file, must be the corresponding to SPi, the representative specie of the order/family. The requirement for the file to be named with the locus tag can be fulfilled by running the `bulk_rename.sh` script, on the `SPi_folder`. This is required because the after the alignment the sequence order in the multifasta is changed.
-* CC: this folder must contain C1.fa -> Cn.fa (multifasta with all the CDS sequences of the representative specie of the set, present in each core-genome 1->n ), GNM.fa (genome sequence of SPi) and single.fa (singletons of the set). Folder names are important, since from them the species names will be taken for some of the plots.
-* PHE: this folder must contain the putative/predicted highly expressed proteins (usually ribosomal proteins, tRNA ligases, etc. It can also be user defined)
+  `locus_tagi.fa`: these files are multifasta files which will be used by TranslatorX for the amino acid based codon alignment. The first ortholog sequence in the file, must be the corresponding to SPi, the representative specie of the order/family. The requirement for the file to be named with the locus tag can be fulfilled by running the `bulk_rename.sh` script, on the `SPi_folder`. This is required because after the alignment the sequence order in the multifasta can be changed.
+* CC: this folder must contain C1.fa -> Cn.fa (multifasta files, each with all the CDS sequences of the core-genome (C1->n) of representative specie -SPi- of the set), GNM.fa (genome sequence of SPi) and single.fa (singletons of the set). Folder names are important, since from them the species names will be taken for some of the plots.
+* PHE: this folder must contain a PHE.fa file with the codin sequences of the putative/predicted highly expressed proteins (usually ribosomal proteins, tRNA ligases, etc. It can also be user defined)
 
 ## Instructions
 Just run the script!
@@ -101,8 +101,9 @@ The distance calculation takes time, so if you don't need it, just skip it with 
 ## Relevant Outputs
 * Sequences representing the modal frequency of highly/lowly expressed conserved and variable regions.
   `SPi_HEP_CR.modal_freq.fas, SPi_HEP_VR.modal_freq.fas, SPi_LEP_CR.modal_freq.fas, SPi_LEP_VR.modal_freq.fas`.
-* Conservation table
-  SPi_CE.table, a table with the proportion of conserved and variable regions for each gene.
+* Conservation table and plot
+  `SPi_CE.table`, a table with the proportion of conserved and variable regions for each gene.
+  `coverage_plot.svg`, a density plot of the length of conserved and variable regions for HEP and LEP.
 * Correspondence analysis plots and tables
   `CA_genes.svg, CA_codons.svg`.
 
@@ -113,10 +114,7 @@ Usage: GC3.sh [-y] [-h]
         -y Skips command confirmation
         -h Show this Help
 ```
-Compute the average GC3.
-This script scans for singletons, HEP (VR - CR), LEP (VR - CR) and PHE fasta files, and computes the GC percent of the third codon base.
-Generates a GC3 vs gene set plot.
-
+This script scans for singletons, HEP (VR - CR), LEP (VR - CR) and PHE fasta files, and computes the GC percent of the third (GC3) codon base. Generates a GC3 vs gene set plot.
 
 ## Input
 Requires the outputs of cCvsE.sh 
@@ -133,10 +131,7 @@ Usage: tAi_Modal.sh [-y] [-h]
         -h Show this Help
 
 ```
-Computes tAi Adaptaion Index of Modal frequencies.
-This script scans all the child directories for C1 and singleton .modal_freq files and computes de adaptation index tAi.
-Generates a tAi vs Distance plot.
-
+This script scans all the child directories for C1->n, singleton,  HEP (VR - CR), LEP (VR - CR), PHE, GNM .modal_freq files and computes de adaptation index s-tAi. Generates a tAi vs Distance plot.
 
 ## Input
 Requires the outputs of cCvsE.sh 
@@ -154,7 +149,7 @@ Usage: calculate_dist_tree_heatmap.sh [-h]]
 
         -h Show this Help
 ```
-Generates a NJ distances tree and heatmap of CUF for Ci, Singletons, and expression sets.
+Generates a NJ distances tree and heatmap of CUF for Ci, Singletons, and CR, VR, HEP and LEP sets.
 
 
 ## Input
@@ -170,8 +165,6 @@ Usage: Nc_plots.sh [-h]
 
         -h Show this Help
 ```
-Nc plots for CR and VR regions.
-
 This script calculates Nc using codonw, and generates different plots and tables.
  
 ## Input
@@ -188,7 +181,7 @@ Usage: CRdelta_heatmap.sh [-h]
 
         -h Show this Help
 ```
-Calculates RSCU difference between HEP-CR, HEP and PHE, and plots a heatmap.
+Calculates RSCU difference between HEP-CR, HEP and PHE, and plots different heatmaps.
 
 
 ## Input
