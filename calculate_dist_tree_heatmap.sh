@@ -4,7 +4,7 @@ clear
 show_help()
 {
 echo "
-        Usage: calculate_dist_tree_heatmap.sh [-h]]
+        Usage: calculate_dist_tree_heatmap.sh [-h]
 
         -h Show this Help
 
