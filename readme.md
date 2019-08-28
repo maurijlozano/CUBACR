@@ -4,7 +4,7 @@ Scripts for the codon usage bias analysis of Conserved and Variable regions from
 CUBACR scripts are programmed to process multifasta files containing ortholog genes of the a desired core-gene set (or corresponding to proteins with a defined expression level), make an amino acid guided codon alignment for each gene (using TranslatorX software), and to output the conserved and variable regions of all genes on the core-gene set.  
 This CR (conserved) and VR (variable) sequences can then be used for:  
 
-1. calculation of codon usage modal frequencies (using G. Olsen software) for CR and VR.
+1. Calculation of codon usage modal frequencies (using G. Olsen software) for CR and VR.
 2. CR and VR sequence concatenates.
 3. Correspondence analysis of RSCU for genes and modal frequencies.
 4. Calculate bootstrapped sequences using G. Olsen software.
@@ -17,7 +17,7 @@ This CR (conserved) and VR (variable) sequences can then be used for:
 In order for the scripts to run the following programs must be installed on the system, and included in the linux $PATH.
 
 ## Requirements
-- TranslatorX (included on with the scripts). Alignment software must be installed in order to TranslatorX to work. Muscle, clustal, mafft, t-coffee can be installed from Ubuntu (Linux) repository.
+- TranslatorX (included with the scripts). Alignment software must be installed in order to TranslatorX to work. Muscle, clustal, mafft, t-coffee can be installed from Ubuntu (Linux) repository.
 - The software needs G. Olsen software which can be found in [link](http://www.life.illinois.edu/gary/programs/codon_usage.html). The installation instructions are clearly provided by the author. The software must be in the linux $PATH to work correctly. 
 - a local installation of [codonw](http://codonw.sourceforge.net/).
 - [phylip](http://evolution.genetics.washington.edu/phylip.html) package for the tRNA tree generation.
@@ -41,11 +41,11 @@ Usage: cCvsE.sh [-o] [-c] [-h] [-i] [-b] [-m] [-n] [-a] [-t] [-v]
         -t Skips Conservation table generation
         -v Defines variability cutoff, must be 0<v<1
 
-
+```
 Generates an amino acid guided codon alignment and calcualtes codon usage for conserved protein sequences, both on higly and lowly expressed proteins.
 
 Then calculates the distance between modal and bootstraped sequences.
-```
+
 
 ## Input
 The input for cCvsE.sh requires the following folder structure:
@@ -112,11 +112,11 @@ Usage: GC3.sh [-y] [-h]
 
         -y Skips command confirmation
         -h Show this Help
-
+```
 Compute the average GC3.
 This script scans for singletons, HEP (VR - CR), LEP (VR - CR) and PHE fasta files, and computes the GC percent of the third codon base.
 Generates a GC3 vs gene set plot.
-```
+
 
 ## Input
 Requires the outputs of cCvsE.sh 
@@ -132,11 +132,11 @@ Usage: tAi_Modal.sh [-y] [-h]
         -y Skips command confirmation
         -h Show this Help
 
-
+```
 Computes tAi Adaptaion Index of Modal frequencies.
 This script scans all the child directories for C1 and singleton .modal_freq files and computes de adaptation index tAi.
 Generates a tAi vs Distance plot.
-```
+
 
 ## Input
 Requires the outputs of cCvsE.sh 
@@ -153,9 +153,9 @@ Requires the following files present on the SPi_folder:
 Usage: calculate_dist_tree_heatmap.sh [-h]]
 
         -h Show this Help
-
-Generates a NJ distances tree and heatmap of CUF for Ci, Singletons, and expression sets.
 ```
+Generates a NJ distances tree and heatmap of CUF for Ci, Singletons, and expression sets.
+
 
 ## Input
 Requires the outputs of cCvsE.sh 
@@ -169,9 +169,9 @@ Requires the outputs of cCvsE.sh
 Usage: Nc_plots.sh [-h]
 
         -h Show this Help
-
-Nc plots for CR and VR regions.
 ```
+Nc plots for CR and VR regions.
+
 This script calculates Nc using codonw, and generates different plots and tables.
  
 ## Input
@@ -187,9 +187,9 @@ Requires the outputs of cCvsE.sh
 Usage: CRdelta_heatmap.sh [-h]
 
         -h Show this Help
-
-Calculates RSCU difference between HEP-CR, HEP and PHE, and plots a heatmap.
 ```
+Calculates RSCU difference between HEP-CR, HEP and PHE, and plots a heatmap.
+
 
 ## Input
 Requires the outputs of cCvsE.sh 
