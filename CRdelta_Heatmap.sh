@@ -12,7 +12,8 @@ echo "
 
         -h Show this Help
 "
-echo -e '\nCalculates RSCU difference between HEP-CR, HEP and PHE.\n\n'
+echo -e '\nCalculates RSCU difference between HEP-CR/VR, LEP-CR/VR, HEP and PHE and plots different heatmaps.\n\n'
+
 exit 1
 }
 
