@@ -48,7 +48,7 @@ rownames(deltaHEP_LEP)="deltaHEP-LEP"
 
 
 aminoacids <- c("C","D","E","F","H","K","N","Q","Y","I","A","G","P","T","V","L","R","S")
-aminoacids3letter <- c("Cys","Asp","Glu","Phe","His","Lys","Asn","Gln","Tyr","Ile","Ala","Gly","Pro","Trp","Val","Leu","Arg","Ser")
+aminoacids3letter <- c("Cys","Asp","Glu","Phe","His","Lys","Asn","Gln","Tyr","Ile","Ala","Gly","Pro","Thr","Val","Leu","Arg","Ser")
 aancod <- c(2,2,2,2,2,2,2,2,2,3,4,4,4,4,4,6,6,6)
 aa.table <- as.data.frame(cbind(aminoacids,aminoacids3letter,aancod))
 aa.table$aancod <- as.numeric(as.character(aa.table$aancod))

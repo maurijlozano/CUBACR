@@ -71,3 +71,26 @@ ls -d */ | while read F; do
 done
 svg_stack.py --direction=h --margin=0 fig4.svg f4s.svg  > Heatmap2.svg
 rm fig4.svg 
+
+
+cp f4c.svg fig4.svg
+
+ls -d */ | while read F; do 
+    echo Processing "${F}"
+
+    if [[ ! -f "./${F}/"delta-heatmap3.svg ]] ; then
+        echo ':('
+        continue
+    fi
+    
+	if [[ -d "./${F}/"LEP ]] ; then
+    svg_stack.py --direction=h --margin=0 fig4.svg "./${F}"delta-heatmap3.svg > fig4a.svg
+	rm fig4.svg
+    mv fig4a.svg fig4.svg
+    fi
+done
+svg_stack.py --direction=h --margin=0 fig4.svg f4s2.svg  > Heatmap3.svg
+rm fig4.svg 
+
+
+
