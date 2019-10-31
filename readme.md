@@ -137,7 +137,7 @@ This script scans all the child directories for C1->n, singleton,  HEP (VR - CR)
 ## Input
 Requires the outputs of cCvsE.sh 
 Requires the following files present on the SPi_folder:
-`trna.txt` -> relative frequence of tRNA gene copies, as used in CUBES.
+`trna.txt` -> relative frequency of tRNA gene copies, as used in CUBES.
 `s_opts_DCBS_GNM.txt` -> Sij obtained with CUBES using all the genome.
 
 ## Output
