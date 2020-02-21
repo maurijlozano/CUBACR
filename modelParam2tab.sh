@@ -48,7 +48,7 @@ ls -d */*/*/ | grep 'CC' -v | grep 'PHE' -v | while read D; do
 		line=$(grep 'ns =' results.mlc)
 		echo -n $line | sed -E 's/^ns = ([0-9]{1,3}) ls = ([0-9]{1,5}$)/\1 \2 /' >> "${file}"
 		line=$(grep 'tree length = ' results.mlc)
-		echo -n "${line} "| sed -E 's/^tree length = //' >> "${file}"
+		echo -n "${line} "| sed -E 's/^tree length =  ?//' >> "${file}"
 		line=$(grep "omega (dN/dS) = " results.mlc)
 		echo -n "${line} " | sed -E 's/^omega \(dN\/dS\) =  ?//' >> "${file}"
 		line=$(grep "kappa (ts/tv) = " results.mlc)
