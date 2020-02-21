@@ -213,7 +213,8 @@ The following scripts scan the child directories doing for every protein in the 
 3. Runs codeml to optimize the parámeteres under the codon evolutionary model M0, using the previously generated tree and the amino acid guided codon alignment.
 4. Runs PAML evolver to generate simulated sequences under the M0 model with the determined paramters.
 5. With the simulated datasets, makes the aminoacid guided codon alignment, extracts CR and VR regions and the calculate corresponding modal frequencies.  
+6. Use modelParam2tab.sh to generate a table with the model parameters for all proteins.
   
 **Control_Sim_dist_tree.sh**  
-6. Searchs for the results of SimulCR_VR.sh script and generate two control trees including the simulated HEP/LEP-cr/vr sets.
+7. Searchs for the results of SimulCR_VR.sh script and generate two control trees including the simulated HEP/LEP-cr/vr sets.
 
