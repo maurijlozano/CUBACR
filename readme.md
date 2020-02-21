@@ -206,13 +206,14 @@ The output of this script are three Heatmap(n).svg files.
 # CUBACR-CT
 CUBACR-CT requires the results of ./cCvsE.sh (Amino acid based codon alignment) and the following programs: modeltest-ng; codonPhyml and PAML4.
 The following scripts scan the child directories doing for every protein in the HEP and LEP folders the following processes:
+  
 **SimulCR_VR.sh**
 1. Search for the Amino acid alignment and predict the most likely protein evolutionary model.
 2. Run codonPhyml with the selected evolutionary model.
 3. Runs codeml to optimize the parámeteres under the codon evolutionary model M0, using the previously generated tree and the amino acid guided codon alignment.
 4. Runs PAML evolver to generate simulated sequences under the M0 model with the determined paramters.
 5. With the simulated datasets, makes the aminoacid guided codon alignment, extracts CR and VR regions and the calculate corresponding modal frequencies.  
-**Control_Sim_dist_tree.sh**  
   
+**Control_Sim_dist_tree.sh**  
 6. Searchs for the results of SimulCR_VR.sh script and generate two control trees including the simulated HEP/LEP-cr/vr sets.
 
