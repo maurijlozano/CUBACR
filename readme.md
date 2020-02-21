@@ -13,7 +13,8 @@ This CR (conserved) and VR (variable) sequences can then be used for:
 6. Heatmaps of the difference of modal codon usage between Highly/lowly expressed and Conserved/Variable sequences.
 7. Calculate GC3, s-tAI, and Nc plots for all the genes and modal sequences.
 
-**NEW:**
+**NEW:**  
+  
 8. Calculate a neighbor joining tree using G. Olsen `freqs_2_nj_tree_linux` script (using Type 2 distance) adding as control artificial sequences evolved under no pressure for codon selection (M0 codon evolution model with F3X4 equilibrium frequencies).   
 
 # Installation
@@ -24,7 +25,11 @@ In order for the scripts to run the following programs must be installed on the 
 - The software needs G. Olsen software which can be found in [link](http://www.life.illinois.edu/gary/programs/codon_usage.html). The installation instructions are clearly provided by the author. The software must be in the linux $PATH to work correctly. Additionally, in order to run in ubuntu some lines of the code must be modified (See CUBES page. Modified files are provided with CUBES)  
 - a local installation of [codonw](http://codonw.sourceforge.net/).
 - [phylip](http://evolution.genetics.washington.edu/phylip.html) package for the tRNA tree generation. Can be installed from the linux repository.
-- [R-project] (https://www.r-project.org/) software with the following libraries: stringr, plyr, tidyr, ggplot2, ggrepel, ggthemes, ggpmisc, ggsignif, ggpubr, data.table, naturalsort, tidyr, agricolae, pheatmap, ape, tAI, doParallel, doRNG, ade4, phytools. 
+- [R-project] (https://www.r-project.org/) software with the following libraries: stringr, plyr, tidyr, ggplot2, ggrepel, ggthemes, ggpmisc, ggsignif, ggpubr, data.table, naturalsort, tidyr, agricolae, pheatmap, ape, tAI, doParallel, doRNG, ade4, phytools.
+### Additional requirements for CUBACR-CT
+- [codonPhyML] (https://sourceforge.net/projects/codonphyml/). codonPhyML uses Markovian codon models of evolution in phylogeny reconstruction.
+- [Modeltest-ng](https://github.com/ddarriba/modeltest). ModelTest-NG is a tool for selecting the best-fit model of evolution for DNA and protein alignments. ModelTest-NG supersedes jModelTest and ProtTest in one single tool, with graphical and command console interfaces.
+- [PAML4](http://abacus.gene.ucl.ac.uk/software/paml.html). PAML is a package of programs for phylogenetic analyses of DNA or protein sequences using maximum likelihood. 
   
 The main script of this package is **cCvsE.sh**
 
@@ -206,7 +211,8 @@ The following scripts scan the child directories doing for every protein in the 
 2. Run codonPhyml with the selected evolutionary model.
 3. Runs codeml to optimize the parámeteres under the codon evolutionary model M0, using the previously generated tree and the amino acid guided codon alignment.
 4. Runs PAML evolver to generate simulated sequences under the M0 model with the determined paramters.
-5. With the simulated datasets, makes the aminoacid guided codon alignment, extracts CR and VR regions and the calculate corresponding modal frequencies.
-**Control_Sim_dist_tree.sh**
+5. With the simulated datasets, makes the aminoacid guided codon alignment, extracts CR and VR regions and the calculate corresponding modal frequencies.  
+**Control_Sim_dist_tree.sh**  
+  
 6. Searchs for the results of SimulCR_VR.sh script and generate two control trees including the simulated HEP/LEP-cr/vr sets.
 
