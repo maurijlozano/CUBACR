@@ -13,6 +13,9 @@ This CR (conserved) and VR (variable) sequences can then be used for:
 6. Heatmaps of the difference of modal codon usage between Highly/lowly expressed and Conserved/Variable sequences.
 7. Calculate GC3, s-tAI, and Nc plots for all the genes and modal sequences.
 
+**NEW:**
+8. Calculate a neighbor joining tree using G. Olsen `freqs_2_nj_tree_linux` script (using Type 2 distance) adding as control artificial sequences evolved under no pressure for codon selection (M0 codon evolution model with F3X4 equilibrium frequencies).   
+
 # Installation
 In order for the scripts to run the following programs must be installed on the system, and included in the linux $PATH.
 
@@ -194,3 +197,16 @@ The output of this script is a set of heatmaps with the difference of modal codo
 Files: `delta-heatmap.svg, delta-heatmap2.svg, delta-heatmap3.svg`.
 To integrate the results for all species analyzed, the `make_heatmap_fig.sh` can be run.
 The output of this script are three Heatmap(n).svg files.
+
+# CUBACR-CT
+CUBACR-CT requires the results of ./cCvsE.sh (Amino acid based codon alignment) and the following programs: modeltest-ng; codonPhyml and PAML4.
+The following scripts scan the child directories doing for every protein in the HEP and LEP folders the following processes:
+**SimulCR_VR.sh**
+1. Search for the Amino acid alignment and predict the most likely protein evolutionary model.
+2. Run codonPhyml with the selected evolutionary model.
+3. Runs codeml to optimize the parámeteres under the codon evolutionary model M0, using the previously generated tree and the amino acid guided codon alignment.
+4. Runs PAML evolver to generate simulated sequences under the M0 model with the determined paramters.
+5. With the simulated datasets, makes the aminoacid guided codon alignment, extracts CR and VR regions and the calculate corresponding modal frequencies.
+**Control_Sim_dist_tree.sh**
+6. Searchs for the results of SimulCR_VR.sh script and generate two control trees including the simulated HEP/LEP-cr/vr sets.
+
