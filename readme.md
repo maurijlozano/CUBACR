@@ -177,7 +177,7 @@ Usage: Nc_plots.sh [-h]
 This script calculates Nc using codonw, and generates different plots and tables.
  
 ## Input
-Requires the outputs of cCvsE.sh 
+Requires the outputs of cCvsE.sh, and the following datasets must be present on the corresponing folders: GNM/genome, C1->Cn, HEP,LEP,PHE,Single,HEP_VR,HEP_CR,LEP_VR,LEP_CR.
 
 ## Output
 `modal_seqs_NC_GC3s.tab, NC_GC3s.tab` -> Tables with Nc information for all the genes in the genome, and for modal sequences of HEP/LEP CR/VR, singletons, GNM and C1->n sets.
