@@ -37,11 +37,11 @@ ls -d */*/*/ | grep 'CC' -v | grep 'PHE' -v | while read -r D; do
 	echo -e "Testing evolutionary models for ${D}."
 	protID=$(echo $D | sed -E 's/^[^/]*\/[^/]*\/([^/]*)\/$/\1/' | sed -E 's/([^_]*_[^_]*).*/\1/')
 	cd "${D}"
+	seqname=$(grep '>' $(ls *.aa_ali.fasta | grep 'sim' -v ) | head -n 1 | sed -E 's/>([^_]*_[^_]*).*/\1/')
 
-
-	#Modeltest
-	if [ ! -f "modeltest.out" ]; then
-		#generating nt.ali
+	if [[ ! -f aa.phy ]]
+	then
+		#generating aa.ali
 		input=$(ls *.aa_ali.fasta | grep 'sim' -v )
 		ALNL=$(sed -n '2p' ${input} | wc -m)
 		ALNL=$(echo $((${ALNL} - 1)))
@@ -69,10 +69,15 @@ ls -d */*/*/ | grep 'CC' -v | grep 'PHE' -v | while read -r D; do
 			then
 				echo -n $line | sed -E 's/>([^_]*_[^_]*).*/\1  /' >> nt.phy
 			else
-				echo $line | sed -E 's/(.{3})/\1 /g' | sed -e 's/TAG/---/g' -e 's/TAA/---/g' -e 's/TGA/---/g' >> nt.phy
+				echo $line | sed -E 's/(.{3})/\1 /g' | sed -e 's/TAG//g' -e 's/TAA//g' -e 's/TGA//g' >> nt.phy
 			fi
 		done < "$input"
+	else
+		echo "Alignments files already generated..."
+	fi
 
+	#Modeltest
+	if [ ! -f "modeltest.out" ]; then
 		#Now, we have to run modeltest-ng and codonPhyml to make treefile
 		{
 			modeltest-ng -i aa.phy -d aa -o modeltest -m "DAYHOFF,LG,DCMUT,JTT,MTREV,WAG,RTREV,CPREV,VT,BLOSUM62,MTMAM,MTART,HIVB,HIVW" --force &> /dev/null 
@@ -90,7 +95,13 @@ ls -d */*/*/ | grep 'CC' -v | grep 'PHE' -v | while read -r D; do
 		line=$(grep '> phyml' modeltest.out  | sed -n 1p)
 		line=$(echo $line | sed -E 's/^> phyml//' | sed -e 's/-a 0/-a e/')
 		echo -e "Making phylogenetic tree."
-		codonphyml $line &> /dev/null
+		{
+			codonphyml $line &> /dev/null
+		} || {
+			echo "Analysis not completed! Deleting aa.phy_codonphyml_tree.txt..."
+			rm aa.phy_codonphyml_tree.txt &> /dev/null
+			exit
+		}
 	else
 		echo "Phylogenetic tree already constructed for this protein."
 	fi
@@ -124,12 +135,22 @@ ls -d */*/*/ | grep 'CC' -v | grep 'PHE' -v | while read -r D; do
 	echo "      method = 0" >> codeml.ctl
 
 	# Optimizing codon model M0.
+
 	if [ ! -f "results.mlc" ]; then
 		echo -e "Optimizing codon model M0."
-		codeml codeml.ctl &> /dev/null
-	else
+		{ 
+			codeml codeml.ctl &> /dev/null
+
+		} || { 
+			echo "Analysis not completed! Deleting results.mlc..."
+			rm results.mlc
+			exit
+		}
+	else			
 		echo "Codon model already optimized."
 	fi
+
+
 
 	#Evolver
 	#Generate MCcodon.dat for palm-evolver
@@ -139,7 +160,7 @@ ls -d */*/*/ | grep 'CC' -v | grep 'PHE' -v | while read -r D; do
 	echo $line | sed -E 's/^ns = ([0-9]{1,3}) ls = ([0-9]{1,5}$)/\1 \2 1/' >> MCcodon.dat
 	line=$(grep 'tree length = ' results.mlc)
 	echo $line | sed -E 's/^tree length = //' >> MCcodon.dat
-	line=$(grep "$seqlabel:" results.mlc)
+	line=$(grep "$seqname:" results.mlc)
 	echo $line >> MCcodon.dat
 	line=$(grep "omega (dN/dS) = " results.mlc)
 	echo $line | sed -E 's/^omega \(dN\/dS\) = //' >> MCcodon.dat
@@ -151,13 +172,26 @@ ls -d */*/*/ | grep 'CC' -v | grep 'PHE' -v | while read -r D; do
 		if [[ $(command -v evolver) ]]
 			then 
 			echo -e "Generating simulated dataset."
-			evolver 6 MCcodon.dat &> /dev/null
+			{
+				evolver 6 MCcodon.dat &> /dev/null
+			} || {
+				echo "An error with Paml evolver occurred!"
+				rm mc.paml &> /dev/null
+				exit
+			}
 		elif [[ $(command -v paml-evolver) ]]
 			then
 			echo -e "Generating simulated dataset."
-			paml-evolver 6 MCcodon.dat &> /dev/null
+			{
+				paml-evolver 6 MCcodon.dat &> /dev/null
+			} || {
+				echo "An error with Paml evolver occurred!"
+				rm mc.paml &> /dev/null
+				exit
+			}
 		else
 			echo "Paml evolver not found!"
+			exit
 		fi
 	else
 		echo "simulation already run."
