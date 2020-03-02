@@ -53,7 +53,7 @@ ls -d */*/*/ | grep 'CC' -v | grep 'PHE' -v | while read -r D; do
 		#generating nt.ali
 		input=$(ls *.nt_ali.fasta | grep 'sim' -v)
 		ALNL=$(sed -n '2p' ${input} | wc -m)
-		ALNL=$(echo $((${ALNL} - 4)))
+		ALNL=$(echo $((${ALNL} - 1)))
 		ALNS=$(grep -v '>' ${input} | wc -l)
 		touch nt.phy
 		echo ' '${ALNS}' '${ALNL} > nt.phy
