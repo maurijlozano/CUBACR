@@ -25,14 +25,16 @@ In order for the scripts to run the following programs must be installed on the 
 - The software needs G. Olsen software which can be found in [link](http://www.life.illinois.edu/gary/programs/codon_usage.html). The installation instructions are clearly provided by the author. The software must be in the linux $PATH to work correctly. Additionally, in order to run in ubuntu some lines of the code must be modified (See CUBES page. Modified files are provided with CUBES)  
 - a local installation of [codonw](http://codonw.sourceforge.net/).
 - [phylip](http://evolution.genetics.washington.edu/phylip.html) package for the tRNA tree generation. Can be installed from the linux repository.
-- [R-project] (https://www.r-project.org/) software with the following libraries: stringr, plyr, tidyr, ggplot2, ggrepel, ggthemes, ggpmisc, ggsignif, ggpubr, data.table, naturalsort, tidyr, agricolae, pheatmap, ape, tAI, doParallel, doRNG, ade4, phytools.
+- [R-project] (https://www.r-project.org/) software with the following libraries: stringr, plyr, tidyr, ggplot2, ggrepel, ggthemes, ggpmisc, ggsignif, ggpubr, data.table, naturalsort, tidyr, agricolae, pheatmap, ape, tAI, doParallel, doRNG, ade4, phytools.  
+  
+The main script of this package is **cCvsE.sh**  
+
 ### Additional requirements for CUBACR-CT
 - [codonPhyML] (https://sourceforge.net/projects/codonphyml/). codonPhyML uses Markovian codon models of evolution in phylogeny reconstruction.
 - [Modeltest-ng](https://github.com/ddarriba/modeltest). ModelTest-NG is a tool for selecting the best-fit model of evolution for DNA and protein alignments. ModelTest-NG supersedes jModelTest and ProtTest in one single tool, with graphical and command console interfaces.
 - [PAML4](http://abacus.gene.ucl.ac.uk/software/paml.html). PAML is a package of programs for phylogenetic analyses of DNA or protein sequences using maximum likelihood. 
+- For SimulCR_VR_IQTREE.sh, which uses IQtree software instead of codonPhyml, modeltest-ng and PAML4 for the phylogenetic inference and model optimization, IQtree should be installed and accessible from the working directory. PAML4 evolver is required for the generation of simulated sequences.
   
-The main script of this package is **cCvsE.sh**
-
 # cCvsE.sh
 To display usage instructions type: cCvsE.sh -h  
 ```
@@ -214,7 +216,10 @@ The following scripts scan the child directories doing for every protein in the 
 4. Runs PAML evolver to generate simulated sequences under the M0 model with the determined paramters.
 5. With the simulated datasets, makes the aminoacid guided codon alignment, extracts CR and VR regions and the calculate corresponding modal frequencies.  
 6. Use modelParam2tab.sh to generate a table with the model parameters for all proteins.
-  
+ 
+**SimulCR_VR_IQTREE.sh** 
+Similar to SimulCR_VR.sh but uses IQtree for phylogenetic inference. The main advantage is that IQtree uses multiple cores in the analysis, while codeml doesn't, improving the runing time.
+
 **Control_Sim_dist_tree.sh**  
 7. Searchs for the results of SimulCR_VR.sh script and generate two control trees including the simulated HEP/LEP-cr/vr sets.
 
