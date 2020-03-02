@@ -8,6 +8,7 @@ echo "
 
         -h Show this Help
         -v Defines variability cutoff, must be 0<v<1
+        -T CPUS to use in the analysis. The Default value is N cores/3.
 "
 
 echo -e '\nGenerates sequences under the same evolutionary model of HEP and LEP proteins both on highly and lowly expressed proteins, using IQTREE to infer phylogeny under the GY M0 model.\n\n'
@@ -15,12 +16,13 @@ echo -e '\nGenerates sequences under the same evolutionary model of HEP and LEP 
 exit 1
 }
 
-while getopts ":hv:" option; do
+while getopts ":hv:T:" option; do
     case "${option}" in
         h) show_help
             exit 1
             ;;
         v) VI=$OPTARG;;
+        T) T=$OPTARG;;
         \?) echo "Invalid option: -${OPTARG}" >&2
             exit 1
             ;;
@@ -29,6 +31,14 @@ while getopts ":hv:" option; do
             ;;
     esac
 done
+NPROC=$(nproc)
+NPROCIQ=$(( $NPROC / 3 ))
+if [[ $T ]];
+	then
+		NPROCIQ=${T}
+fi
+
+
 
 WD=$(pwd)
 #First, converts fasta alignments to sequential phylip format
@@ -56,7 +66,7 @@ ls -d */*/*/ | grep 'CC' -v | grep 'PHE' -v | while read -r D; do
 			fi
 		done < "$input"
 		{
-		iqtree -s nt.phy -st CODON -m GY+F3x4 -T 2 #AUTO
+		iqtree -s nt.phy -st CODON -m GY+F3x4 -T ${NPROCIQ} #AUTO
 		} || {
 			echo "An error occurred..."
 			exit
