@@ -62,7 +62,7 @@ ls -d */*/*/ | grep 'CC' -v | grep 'PHE' -v | while read -r D; do
 			then
 				echo -n $line | sed -E 's/>([^_]*_[^_]*).*/\1  /' >> nt.phy
 			else
-				echo $line | sed -E 's/(.{3})/\1 /g' | sed -e 's/TAG//g' -e 's/TAA//g' -e 's/TGA//g' >> nt.phy
+				echo $line | sed -E 's/(.{3})/\1 /g' | sed -e 's/TAG/---/g' -e 's/TAA/---/g' -e 's/TGA/---/g' >> nt.phy
 			fi
 		done < "$input"
 		{
