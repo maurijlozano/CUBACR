@@ -21,7 +21,7 @@ This CR (conserved) and VR (variable) sequences can then be used for:
 In order for the scripts to run the following programs must be installed on the system, and included in the linux $PATH.
 
 ## Requirements
-- [TranslatorX](http://www.translatorx.co.uk/) (included with the scripts). Alignment software must be installed in order for TranslatorX to work. Muscle, clustal, mafft, t-coffee can be installed from Ubuntu (Linux) repository (sudo apt install ...).
+- [TranslatorX](http://www.translatorx.co.uk/) [perl script](http://pc16141.mncn.csic.es/cgi-bin/translatorx_vLocal.pl) must be downloaded into CUBACR folder. Alignment software must be installed in order for TranslatorX to work. **Muscle**, clustal, mafft, t-coffee can be installed from Ubuntu (Linux) repository (sudo apt install ...).
 - The software needs G. Olsen software which can be found in [link](http://www.life.illinois.edu/gary/programs/codon_usage.html). The installation instructions are clearly provided by the author. The software must be in the linux $PATH to work correctly. Additionally, in order to run in ubuntu some lines of the code must be modified (See CUBES page. Modified files are provided with CUBES)  
 - a local installation of [codonw](http://codonw.sourceforge.net/).
 - [phylip](http://evolution.genetics.washington.edu/phylip.html) package for the tRNA tree generation. Can be installed from the linux repository.
